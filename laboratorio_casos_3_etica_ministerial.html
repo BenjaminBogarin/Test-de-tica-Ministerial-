@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Laboratorio de Casos 3 — Ética Ministerial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy:       #0f2340;
+    --navy-mid:   #1a3a5c;
+    --navy-light: #234e78;
+    --gold:       #c9a227;
+    --gold-light: #e8c060;
+    --cream:      #f7f3ed;
+    --cream-dark: #ede6d8;
+    --white:      #ffffff;
+    --text-dark:  #1a1a2e;
+    --text-mid:   #3d4f6b;
+    --text-light: #7a8a9e;
+    --danger:     #8b2635;
+    --success:    #1a5c3a;
+    --warn:       #7a4e12;
+    --border:     rgba(201,162,39,0.25);
+    --shadow-sm:  0 2px 12px rgba(15,35,64,0.08);
+    --shadow-md:  0 8px 32px rgba(15,35,64,0.14);
+    --shadow-lg:  0 20px 60px rgba(15,35,64,0.2);
+    --radius:     14px;
+    --transition: 0.35s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 60%, #0d3460 100%);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a227' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  .header-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 44px 24px 36px;
+    text-align: center;
+    position: relative;
+  }
+  .header-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(201,162,39,0.15);
+    border: 1px solid rgba(201,162,39,0.35);
+    color: var(--gold-light);
+    font-size: 0.72rem;
+    font-family: 'Source Serif 4', serif;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 18px;
+  }
+  .header-badge svg { width: 12px; height: 12px; }
+  header h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(1.7rem, 4vw, 2.6rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  header h1 span { color: var(--gold); }
+  header p.subtitle {
+    font-size: 0.95rem;
+    color: rgba(255,255,255,0.65);
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+  .gold-line {
+    width: 60px; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 18px auto 0;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap {
+    background: var(--navy-mid);
+    border-bottom: 1px solid rgba(201,162,39,0.2);
+    padding: 16px 24px;
+  }
+  .progress-inner {
+    max-width: 860px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .step-dots {
+    display: flex;
+    gap: 10px;
+    flex: 1;
+  }
+  .step-dot {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.15);
+    transition: var(--transition);
+    position: relative;
+  }
+  .step-dot.done   { background: var(--gold); }
+  .step-dot.active { background: var(--gold-light); box-shadow: 0 0 8px rgba(201,162,39,0.6); }
+  .progress-label {
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.55);
+    white-space: nowrap;
+    font-family: 'Source Serif 4', serif;
+  }
+  .progress-label strong { color: var(--gold-light); }
+
+  /* ── MAIN LAYOUT ── */
+  main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 36px 20px 60px;
+  }
+
+  /* ── CASE SCREEN ── */
+  .case-screen {
+    display: none;
+    animation: fadeIn 0.45s ease forwards;
+  }
+  .case-screen.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── CASE HEADER ── */
+  .case-header {
+    margin-bottom: 28px;
+  }
+  .case-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 13px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  .tag-money  { background: rgba(26,92,58,0.1);  color: var(--success); border: 1px solid rgba(26,92,58,0.25); }
+  .tag-sex    { background: rgba(139,38,53,0.1);  color: var(--danger);  border: 1px solid rgba(139,38,53,0.25); }
+  .tag-power  { background: rgba(122,78,18,0.1);  color: var(--warn);    border: 1px solid rgba(122,78,18,0.25); }
+
+  .case-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.8rem;
+    color: var(--text-light);
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+  .case-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.3rem, 3vw, 1.75rem);
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.25;
+  }
+
+  /* ── NARRATIVE CARD ── */
+  .narrative-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    padding: 28px 30px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .narrative-card::before {
+    content: '"';
+    font-family: 'Playfair Display', serif;
+    font-size: 120px;
+    line-height: 1;
+    color: var(--gold);
+    opacity: 0.07;
+    position: absolute;
+    top: -10px; left: 12px;
+    pointer-events: none;
+  }
+  .narrative-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--navy);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .narrative-card h3::before {
+    content: '';
+    display: block;
+    width: 3px; height: 18px;
+    background: var(--gold);
+    border-radius: 2px;
+  }
+  .narrative-card p {
+    font-size: 0.97rem;
+    line-height: 1.78;
+    color: var(--text-mid);
+  }
+
+  .dilemma-box {
+    margin-top: 18px;
+    background: linear-gradient(135deg, #f0f4ff 0%, #e8f0fb 100%);
+    border-left: 3px solid var(--navy-light);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+  }
+  .dilemma-box strong {
+    display: block;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--navy-light);
+    margin-bottom: 5px;
+  }
+  .dilemma-box p {
+    font-size: 0.92rem;
+    color: var(--navy);
+    font-style: italic;
+    line-height: 1.6;
+  }
+
+  /* ── OPTIONS ── */
+  .options-heading {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--navy);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .options-heading span {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .options-grid {
+    display: grid;
+    gap: 12px;
+  }
+
+  .option-btn {
+    background: var(--white);
+    border: 1.5px solid #dce4f0;
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    cursor: pointer;
+    text-align: left;
+    transition: var(--transition);
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    overflow: hidden;
+  }
+  .option-btn::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(26,58,92,0.04) 0%, transparent 100%);
+    opacity: 0;
+    transition: var(--transition);
+  }
+  .option-btn:hover {
+    border-color: var(--navy-light);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+  .option-btn:hover::after { opacity: 1; }
+
+  .option-letter {
+    min-width: 32px; height: 32px;
+    background: var(--cream-dark);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--navy);
+    transition: var(--transition);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .option-btn:hover .option-letter {
+    background: var(--navy);
+    color: var(--gold);
+  }
+  .option-text {
+    font-size: 0.93rem;
+    line-height: 1.6;
+    color: var(--text-mid);
+    font-style: italic;
+  }
+
+  /* ── MODAL OVERLAY ── */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(10,20,40,0.72);
+    z-index: 1000;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal-card {
+    background: var(--white);
+    border-radius: 18px;
+    max-width: 720px;
+    width: 100%;
+    margin: auto;
+    box-shadow: var(--shadow-lg);
+    animation: modalIn 0.4s cubic-bezier(0.34,1.56,0.64,1) forwards;
+    overflow: hidden;
+  }
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.9) translateY(30px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-header {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+    padding: 24px 28px;
+    position: relative;
+  }
+  .modal-header::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .modal-choice-label {
+    font-size: 0.72rem;
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .modal-choice-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--white);
+    line-height: 1.4;
+    font-style: italic;
+  }
+
+  .modal-body { padding: 28px; }
+
+  /* ── FEEDBACK SECTIONS ── */
+  .fb-section {
+    margin-bottom: 22px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #e4eaf4;
+  }
+  .fb-section-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    font-weight: 600;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .fb-section-head .icon {
+    width: 28px; height: 28px;
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .fb-section-body { padding: 14px 16px; font-size: 0.92rem; line-height: 1.72; }
+
+  /* Section colors */
+  .fb-tension   .fb-section-head { background: #f0f4ff; color: var(--navy); }
+  .fb-tension   .fb-section-head .icon { background: var(--navy); color: #fff; }
+  .fb-tension   .fb-section-body { color: var(--text-mid); }
+
+  .fb-system    .fb-section-head { background: #f5f0ff; color: #4a2a7a; }
+  .fb-system    .fb-section-head .icon { background: #4a2a7a; color: #fff; }
+  .fb-system    .fb-section-body { color: #3d2d5a; }
+
+  .fb-conseq    .fb-section-head { background: #fff8e6; color: #6b4a00; }
+  .fb-conseq    .fb-section-head .icon { background: var(--gold); color: #fff; }
+  .fb-conseq    .fb-section-body { color: #4a3200; }
+
+  .tension-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .pill {
+    padding: 5px 13px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+  .pill-a { background: rgba(15,35,64,0.1); color: var(--navy); }
+  .pill-b { background: rgba(139,38,53,0.1); color: var(--danger); }
+  .vs-dot {
+    font-size: 0.75rem;
+    color: var(--text-light);
+    align-self: center;
+  }
+
+  .system-badge {
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+  }
+  .deontological { background: rgba(74,42,122,0.12); color: #4a2a7a; }
+  .teleological  { background: rgba(0,110,80,0.12);  color: #005240; }
+  .mixed         { background: rgba(90,60,0,0.12);   color: #5a3c00; }
+
+  .conseq-grid {
+    display: grid;
+    gap: 10px;
+  }
+  .conseq-item {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: rgba(255,248,230,0.5);
+    border: 1px solid rgba(201,162,39,0.2);
+  }
+  .conseq-icon {
+    width: 26px; height: 26px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .ci-minister { background: #dbe8f0; }
+  .ci-affected { background: #dff0e8; }
+  .ci-church   { background: #f0e8db; }
+  .conseq-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--text-light);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 3px;
+  }
+  .conseq-text {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: #4a3200;
+  }
+
+  .reference-box {
+    background: linear-gradient(135deg, #f7f3ed 0%, #ede6d8 100%);
+    border: 1px solid rgba(201,162,39,0.3);
+    border-radius: 8px;
+    padding: 12px 15px;
+    margin-top: 20px;
+  }
+  .reference-box p {
+    font-size: 0.82rem;
+    color: var(--text-mid);
+    font-style: italic;
+    line-height: 1.6;
+  }
+  .reference-box strong { color: var(--navy); font-style: normal; }
+
+  /* ── MODAL FOOTER ── */
+  .modal-footer {
+    padding: 20px 28px;
+    border-top: 1px solid #eef0f5;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .btn {
+    padding: 11px 24px;
+    border-radius: 8px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: var(--transition);
+    font-family: 'Source Serif 4', serif;
+    letter-spacing: 0.02em;
+  }
+  .btn-outline {
+    background: transparent;
+    border: 1.5px solid #c8d4e8;
+    color: var(--text-mid);
+  }
+  .btn-outline:hover { border-color: var(--navy); color: var(--navy); }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    color: var(--white);
+    box-shadow: 0 4px 14px rgba(15,35,64,0.25);
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(15,35,64,0.35);
+  }
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+    color: var(--navy);
+    box-shadow: 0 4px 14px rgba(201,162,39,0.3);
+  }
+  .btn-gold:hover { transform: translateY(-1px); }
+
+  /* ── COMPLETION SCREEN ── */
+  .completion-screen {
+    display: none;
+    text-align: center;
+    padding: 40px 20px;
+    animation: fadeIn 0.6s ease forwards;
+  }
+  .completion-screen.active { display: block; }
+  .completion-icon {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+    margin: 0 auto 24px;
+    box-shadow: 0 10px 30px rgba(15,35,64,0.25);
+  }
+  .completion-screen h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    color: var(--navy);
+    margin-bottom: 14px;
+  }
+  .completion-screen p {
+    font-size: 0.97rem;
+    color: var(--text-mid);
+    max-width: 480px;
+    margin: 0 auto 30px;
+    line-height: 1.7;
+  }
+  .summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+    gap: 16px;
+    max-width: 640px;
+    margin: 0 auto 32px;
+  }
+  .summary-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    padding: 20px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+  }
+  .summary-card .sc-icon { font-size: 24px; margin-bottom: 8px; }
+  .summary-card .sc-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .summary-card .sc-meta { font-size: 0.8rem; color: var(--text-light); }
+
+  /* ── INTRO SCREEN ── */
+  .intro-screen {
+    text-align: center;
+    padding: 20px 0 40px;
+    animation: fadeIn 0.5s ease forwards;
+  }
+  .intro-hero {
+    background: var(--white);
+    border-radius: 18px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
+    padding: 40px 32px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .intro-hero::before {
+    content: '';
+    position: absolute; top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    background: radial-gradient(circle, rgba(201,162,39,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .intro-seal {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px;
+    margin: 0 auto 20px;
+    box-shadow: 0 8px 24px rgba(15,35,64,0.2);
+  }
+  .intro-hero h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    color: var(--navy);
+    margin-bottom: 14px;
+  }
+  .intro-hero p {
+    font-size: 0.95rem;
+    color: var(--text-mid);
+    line-height: 1.75;
+    max-width: 520px;
+    margin: 0 auto 20px;
+  }
+  .intro-meta {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+  .meta-chip {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--cream-dark);
+    border-radius: 20px;
+    padding: 5px 13px;
+    font-size: 0.78rem;
+    color: var(--text-mid);
+  }
+  .meta-chip svg { width: 12px; height: 12px; opacity: 0.6; }
+  .intro-cases {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px,1fr));
+    gap: 14px;
+    margin-bottom: 30px;
+  }
+  .intro-case-card {
+    background: var(--cream);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    text-align: left;
+  }
+  .icc-tag {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .icc-tag.money { color: var(--success); }
+  .icc-tag.sex   { color: var(--danger); }
+  .icc-tag.power { color: var(--warn); }
+  .icc-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.92rem;
+    color: var(--navy);
+    line-height: 1.35;
+  }
+
+  /* Responsive */
+  @media (max-width: 540px) {
+    .narrative-card { padding: 20px 18px; }
+    .modal-body { padding: 20px 16px; }
+    .modal-footer { padding: 16px; }
+    .modal-footer { flex-direction: column; }
+    .modal-footer .btn { width: 100%; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="header-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      Ética Ministerial · Licenciatura en Teología · 2.° Año
+    </div>
+    <h1>Laboratorio de <span>Casos 3</span></h1>
+    <p class="subtitle">Resolución de Dilemas Éticos — Trull &amp; Carter</p>
+    <div class="gold-line"></div>
+  </div>
+</header>
+
+<!-- PROGRESS BAR -->
+<div class="progress-wrap" id="progressWrap" style="display:none;">
+  <div class="progress-inner">
+    <div class="step-dots" id="stepDots">
+      <div class="step-dot" id="dot0"></div>
+      <div class="step-dot" id="dot1"></div>
+      <div class="step-dot" id="dot2"></div>
+    </div>
+    <div class="progress-label" id="progressLabel"><strong>Caso 1</strong> de 3</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main>
+
+  <!-- ══ INTRO SCREEN ══ -->
+  <div class="intro-screen" id="introScreen">
+    <div class="intro-hero">
+      <div class="intro-seal">⚖️</div>
+      <h2>Bienvenido al Laboratorio de Casos</h2>
+      <p>
+        Estás a punto de enfrentar tres dilemas éticos reales que ocurren en el ministerio latinoamericano.
+        No existen respuestas «perfectas»: cada opción revela una tensión genuina entre valores ministeriales legítimos.
+        Reflexiona con honestidad antes de elegir.
+      </p>
+      <div class="intro-meta">
+        <div class="meta-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg> ~25–35 min</div>
+        <div class="meta-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> Trabajo grupal</div>
+        <div class="meta-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg> Trull &amp; Carter</div>
+      </div>
+      <div class="intro-cases">
+        <div class="intro-case-card">
+          <div class="icc-tag money">💰 Área: Dinero</div>
+          <div class="icc-title">«El Fondo que Nadie Debería Tocar»</div>
+        </div>
+        <div class="intro-case-card">
+          <div class="icc-tag sex">🔒 Área: Sexualidad</div>
+          <div class="icc-title">«Cuando el Corazón Pide lo que el Ministerio Prohíbe»</div>
+        </div>
+        <div class="intro-case-card">
+          <div class="icc-tag power">👑 Área: Poder</div>
+          <div class="icc-title">«La Voz que el Pastor No Quería Escuchar»</div>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="startLab()" style="font-size:1rem; padding:14px 36px;">
+        Comenzar el Laboratorio →
+      </button>
+    </div>
+    <p style="font-size:0.8rem; color:var(--text-light); max-width:500px; margin:0 auto;">
+      <em>Todos los casos son ficticios y usan seudónimos. Cualquier semejanza con personas o situaciones reales es coincidencia. Los casos fueron elaborados con base en la bibliografía oficial: Trull, J. E. y Carter, J. E. <strong>Ética Ministerial</strong>.</em>
+    </p>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       CASO 1: DINERO
+       ══════════════════════════════════════════ -->
+  <div class="case-screen" id="case0">
+    <div class="case-header">
+      <div class="case-number">Caso 1 de 3</div>
+      <div class="case-tag tag-money">💰 Área Crítica: Dinero</div>
+      <h2 class="case-title">«El Fondo que Nadie Debería Tocar»</h2>
+    </div>
+    <div class="narrative-card">
+      <h3>Descripción del Caso</h3>
+      <p>
+        El pastor <strong>Rodrigo Valdés</strong>, de 44 años, lidera desde hace ocho años la Iglesia Evangélica «Nuevo Amanecer» en un barrio periférico de Asunción. La congregación, con unos 180 miembros, lanzó hace tres meses una campaña especial de ofrendas designadas para la construcción de un salón multipropósito. Se han recaudado 45 millones de guaraníes, custodiados en una cuenta separada.
+      </p>
+      <p style="margin-top:12px;">
+        Sin embargo, la situación financiera operativa de la iglesia entró en crisis: la empresa constructora del barrio donde viven dos familias del equipo pastoral subió los alquileres de forma abrupta, y dos de los tres auxiliares pastorales llevan tres meses sin cobrar su estipendio. Uno de ellos, el hermano <strong>Faustino Lezcano</strong>, padre de cuatro hijos, está considerando seriamente dejar el ministerio.
+      </p>
+      <p style="margin-top:12px;">
+        El pastor Valdés tiene acceso firmante a ambas cuentas. El tesorero de la iglesia, único que conoce los detalles, está de viaje por dos semanas. Un miembro del consejo le insinuó privadamente: <em>«Pastor, nadie se va a enterar si movemos un poquito para salir del paso»</em>.
+      </p>
+      <div class="dilemma-box">
+        <strong>⚡ Identificación del Dilema</strong>
+        <p>¿Debe el pastor Valdés utilizar —aunque sea temporalmente— los fondos designados para construcción con el fin de cubrir la emergencia salarial de sus colaboradores, o debe encontrar otra solución que preserve la integridad de esos recursos aunque implique costos personales, institucionales y relacionales significativos?</p>
+      </div>
+    </div>
+    <div class="options-heading">¿Qué debería hacer el pastor Valdés? <span></span></div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="openFeedback(0,0)">
+        <div class="option-letter">A</div>
+        <div class="option-text">Utilizar temporalmente una parte de los fondos designados para pagar los estipendios atrasados, con la intención personal de reponerlos antes de que el tesorero regrese y sin informar a la congregación para no desmoralizar la campaña.</div>
+      </button>
+      <button class="option-btn" onclick="openFeedback(0,1)">
+        <div class="option-letter">B</div>
+        <div class="option-text">Convocar de urgencia a los ancianos disponibles del consejo, revelar la crisis financiera completa, solicitar autorización formal para redirigir una parte de los fondos y comprometerse a comunicarlo a la congregación en el próximo culto.</div>
+      </button>
+      <button class="option-btn" onclick="openFeedback(0,2)">
+        <div class="option-letter">C</div>
+        <div class="option-text">Comunicar al hermano Faustino y a los demás auxiliares la situación real, pedirles paciencia por un mes más, y en paralelo lanzar una convocatoria privada a miembros de mayor capacidad económica para cubrir la deuda salarial mediante ofrendas voluntarias.</div>
+      </button>
+      <button class="option-btn" onclick="openFeedback(0,3)">
+        <div class="option-letter">D</div>
+        <div class="option-text">Asumir personalmente la deuda salarial mediante un préstamo bancario a su nombre, mantener los fondos designados intactos y posponer la resolución estructural hasta que el tesorero regrese, sin informar al consejo para no crear pánico.</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       CASO 2: SEXO
+       ══════════════════════════════════════════ -->
+  <div class="case-screen" id="case1">
+    <div class="case-header">
+      <div class="case-number">Caso 2 de 3</div>
+      <div class="case-tag tag-sex">🔒 Área Crítica: Sexualidad y Límites</div>
+      <h2 class="case-title">«Cuando el Corazón Pide lo que el Ministerio Prohíbe»</h2>
+    </div>
+    <div class="narrative-card">
+      <h3>Descripción del Caso</h3>
+      <p>
+        El pastor <strong>Marcos Ríos</strong>, de 38 años, lleva doce años en el ministerio y es respetado en su región del Departamento Central. Está casado con <strong>Gabriela</strong> desde hace diez años, tienen dos hijos. Hace cuatro meses comenzó a brindar consejería pastoral semanal a <strong>Verónica Paredes</strong>, una mujer de 34 años cuyo matrimonio atraviesa una crisis severa. Las sesiones se realizan en la oficina pastoral, con la puerta cerrada.
+      </p>
+      <p style="margin-top:12px;">
+        Con el correr de las semanas, el pastor Ríos ha notado que las conversaciones se han vuelto más íntimas emocionalmente de lo que debieran. En la sesión más reciente, Verónica confesó, con lágrimas, que ha desarrollado sentimientos románticos hacia él y que siente que él es «la única persona que la entiende de verdad». El pastor, sorprendido, se reconoció internamente que no es indiferente a esa atracción. No hubo ningún contacto físico inapropiado. Esa noche no pudo dormir.
+      </p>
+      <p style="margin-top:12px;">
+        El pastor Ríos sabe que, si hace algo incorrecto, las consecuencias para Verónica, para su familia y para la iglesia serían devastadoras. Pero también siente que, si actúa con demasiada brusquedad, podría perjudicar emocionalmente a una mujer vulnerable en medio de una crisis matrimonial.
+      </p>
+      <div class="dilemma-box">
+        <strong>⚡ Identificación del Dilema</strong>
+        <p>¿Cómo debe el pastor Ríos manejar esta situación de manera que proteja tanto su integridad ministerial y su matrimonio, como el bienestar de una feligresa vulnerable, sin causar daños adicionales mediante una reacción excesivamente abrupta o indiscreta?</p>
+      </div>
+    </div>
+    <div class="options-heading">¿Qué debería hacer el pastor Ríos? <span></span></div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="openFeedback(1,0)">
+        <div class="option-letter">A</div>
+        <div class="option-text">Continuar las sesiones de consejería con mayor distancia emocional, establecer límites verbales claros con Verónica en la próxima reunión, y confiarse en su propia madurez espiritual y fuerza de voluntad para manejar la situación.</div>
+      </button>
+      <button class="option-btn" onclick="openFeedback(1,1)">
+        <div class="option-letter">B</div>
+        <div class="option-text">Interrumpir de forma inmediata la relación de consejería sin dar mayores explicaciones, bloqueando el contacto con Verónica para evitar cualquier riesgo futuro y proteger así su reputación y su ministerio.</div>
+      </button>
+      <button class="option-btn" onclick="openFeedback(1,2)">
+        <div class="option-letter">C</div>
+        <div class="option-text">Revelar lo ocurrido a su esposa Gabriela y a su pastor supervisor o mentor de confianza, transferir el caso de consejería a una counselor femenina calificada, y someterse voluntariamente a un proceso de rendición de cuentas.</div>
+      </button>
+      <button class="option-btn" onclick="openFeedback(1,3)">
+        <div class="option-letter">D</div>
+        <div class="option-text">Transferir el caso a un colega masculino discretamente, sin revelar los detalles de la situación a su esposa ni a supervisores, argumentando internamente que «aún no pasó nada» y que un pastor maduro puede gestionar estas situaciones con privacidad.</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+       CASO 3: PODER
+       ══════════════════════════════════════════ -->
+  <div class="case-screen" id="case2">
+    <div class="case-header">
+      <div class="case-number">Caso 3 de 3</div>
+      <div class="case-tag tag-power">👑 Área Crítica: Poder</div>
+      <h2 class="case-title">«La Voz que el Pastor No Quería Escuchar»</h2>
+    </div>
+    <div class="narrative-card">
+      <h3>Descripción del Caso</h3>
+      <p>
+        El pastor <strong>Andrés Morel</strong>, de 62 años, fundó la Iglesia «Roca Viva» en Encarnación hace veintiún años. Ha pastoreado con dedicación y ha construido una institución sólida: templo propio, escuela cristiana de primaria y un hogar de acogida. En todo ese tiempo, él ha tomado las decisiones importantes de forma unipersonal, con la bendición tácita de un consejo de ancianos compuesto mayoritariamente por personas que él mismo discipuló.
+      </p>
+      <p style="margin-top:12px;">
+        En la última reunión del consejo, <strong>Sebastián Acosta</strong>, de 29 años, recién incorporado como anciano electo por la congregación, presentó una moción formal pidiendo que los estados financieros de la iglesia, incluyendo el salario pastoral y los gastos de representación, sean auditados por un contador externo y presentados anualmente a la congregación. Sebastián habló con respeto pero con firmeza: <em>«No es una acusación, es una práctica de transparencia que honra a Dios y protege al propio pastor»</em>.
+      </p>
+      <p style="margin-top:12px;">
+        El pastor Morel sintió la propuesta como una afrenta personal. Varios ancianos más antiguos lo miran esperando su reacción. La tensión en la sala es palpable. El pastor Morel sabe que, en el fondo, Sebastián no está equivocado, pero también siente que veinte años de entrega merecen confianza, y que este proceso podría abrir una caja de Pandora.
+      </p>
+      <div class="dilemma-box">
+        <strong>⚡ Identificación del Dilema</strong>
+        <p>¿Cómo debe responder el pastor Morel ante esta moción de transparencia financiera, de modo que su reacción no traicione el bien institucional ni su propia integridad, pero que tampoco implique una renuncia a la dignidad de un liderazgo que ha servido con sacrificio durante dos décadas?</p>
+      </div>
+    </div>
+    <div class="options-heading">¿Qué debería hacer el pastor Morel? <span></span></div>
+    <div class="options-grid">
+      <button class="option-btn" onclick="openFeedback(2,0)">
+        <div class="option-letter">A</div>
+        <div class="option-text">Pedir a Sebastián que retire la moción en privado después de la reunión, explicándole que presentar esta propuesta sin consultarlo antes fue un error de protocolo que pone en riesgo la unidad de la iglesia.</div>
+      </button>
+      <button class="option-btn" onclick="openFeedback(2,1)">
+        <div class="option-letter">B</div>
+        <div class="option-text">Aprobar la moción públicamente en la misma reunión, agradecer a Sebastián por su valentía, comprometerse a entregar toda la documentación al contador externo y proponer que este sea el inicio de una reforma de gobierno más participativa.</div>
+      </button>
+      <button class="option-btn" onclick="openFeedback(2,2)">
+        <div class="option-letter">C</div>
+        <div class="option-text">Proponer que se conforme una comisión interna de tres ancianos de confianza para revisar las finanzas, evitando el auditor externo y postergando la presentación a la congregación hasta que el informe esté «listo y contextualizado».</div>
+      </button>
+      <button class="option-btn" onclick="openFeedback(2,3)">
+        <div class="option-letter">D</div>
+        <div class="option-text">Plantear a la asamblea congregacional una votación de confianza en su liderazgo, enmarcando la moción de Sebastián como una señal de desconfianza espiritual, y dejar que la congregación decida si quiere ese tipo de «control externo» en la casa de Dios.</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- ══ COMPLETION ══ -->
+  <div class="completion-screen" id="completionScreen">
+    <div class="completion-icon">🎓</div>
+    <h2>¡Laboratorio Completado!</h2>
+    <p>Has reflexionado sobre los tres dilemas éticos ministeriales. Recuerda que la ética no se trata de encontrar la respuesta perfecta, sino de desarrollar el carácter necesario para enfrentar las tensiones con sabiduría, transparencia y rendición de cuentas.</p>
+    <div class="summary-cards">
+      <div class="summary-card">
+        <div class="sc-icon">💰</div>
+        <div class="sc-title">Caso 1 — Dinero</div>
+        <div class="sc-meta">Integridad financiera</div>
+      </div>
+      <div class="summary-card">
+        <div class="sc-icon">🔒</div>
+        <div class="sc-title">Caso 2 — Sexualidad</div>
+        <div class="sc-meta">Límites pastorales</div>
+      </div>
+      <div class="summary-card">
+        <div class="sc-icon">👑</div>
+        <div class="sc-title">Caso 3 — Poder</div>
+        <div class="sc-meta">Rendición de cuentas</div>
+      </div>
+    </div>
+    <div style="background:var(--white); border-radius:14px; border:1px solid var(--border); padding:24px; max-width:560px; margin:0 auto 28px; box-shadow:var(--shadow-sm);">
+      <p style="font-family:'Playfair Display',serif; font-size:1.05rem; color:var(--navy); font-style:italic; line-height:1.7; margin-bottom:10px;">
+        «El ministerio no es simplemente lo que el ministro hace; es lo que el ministro <em>es</em>. El carácter precede siempre a la conducta.»
+      </p>
+      <p style="font-size:0.8rem; color:var(--text-light);">— Trull &amp; Carter, <em>Ética Ministerial</em>, Cap. 3</p>
+    </div>
+    <button class="btn btn-outline" onclick="restartLab()" style="padding:12px 28px;">↺ Reiniciar Laboratorio</button>
+  </div>
+
+</main>
+
+<!-- ══════════════════════════════════════════
+     FEEDBACK MODAL
+     ══════════════════════════════════════════ -->
+<div class="modal-overlay" id="feedbackModal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div class="modal-choice-label">Opción seleccionada</div>
+      <div class="modal-choice-text" id="modalChoiceText"></div>
+    </div>
+    <div class="modal-body" id="modalBody"><!-- dynamic --></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeFeedback()">Cerrar y revisar</button>
+      <button class="btn btn-gold" id="nextBtn" onclick="goNext()">Siguiente caso →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────────
+
+const cases = [
+
+  /* ══ CASO 1: DINERO ══ */
+  {
+    options: [
+      "A. Utilizar temporalmente fondos designados sin informar al consejo ni a la congregación.",
+      "B. Convocar al consejo de urgencia, revelar la crisis y solicitar autorización formal.",
+      "C. Comunicar la verdad al equipo afectado y convocar donantes de mayor capacidad.",
+      "D. Asumir la deuda personalmente mediante préstamo, sin informar al consejo."
+    ],
+    feedback: [
+      /* Opción A */
+      {
+        tensionA: "Responsabilidad hacia el equipo pastoral",
+        tensionB: "Integridad de los fondos designados",
+        systemType: "teleological",
+        systemLabel: "Teleológico (consecuencialista)",
+        systemExpl: "La decisión se justifica por sus resultados esperados: preservar al colaborador en el ministerio y mantener la paz institucional. Se privilegia el «fin» (el bien del equipo) por encima de la norma (la inviolabilidad de los fondos designados). Trull y Carter advierten que este tipo de razonamiento, si no es acompañado de transparencia y rendición de cuentas, erosiona la confianza institucional y puede derivar en una «cultura de excepción» que normaliza el uso indebido de recursos sagrados (ver Cap. 7, «El ministro y el dinero»).",
+        cMinister: "El pastor carga con una mentira de omisión que crece con el tiempo. Si los fondos no se reponen antes del regreso del tesorero —o si hay un imprevisto contable—, su integridad queda expuesta de forma devastadora. Psicológicamente, el secreto genera culpa crónica que afecta su liderazgo. Su familia desconoce la situación real.",
+        cAffected: "El hermano Faustino recibe su pago, pero sobre una base frágil. Si el engaño se descubre, la restauración se vuelve imposible sin consecuencias disciplinarias. Los demás auxiliares quedan en la misma precariedad, sin que la iglesia tenga información para corregir la situación de fondo.",
+        cChurch: "Si la maniobra se descubre, la credibilidad de la campaña de construcción colapsa y los donantes pueden exigir devolución. El testimonio ante la comunidad queda asociado a una institución que no honra sus compromisos declarados. Se confirma el estereotipo popular de que «las iglesias usan el dinero para lo que quieren»."
+      },
+      /* Opción B */
+      {
+        tensionA: "Transparencia y rendición de cuentas",
+        tensionB: "Protección de la campaña de construcción y la moral congregacional",
+        systemType: "deontological",
+        systemLabel: "Deontológico (basado en el deber)",
+        systemExpl: "La decisión se ancla en principios de transparencia, rendición de cuentas y gobierno colegiado, independientemente del costo político o emocional que implique. Trull y Carter sostienen que la mayordomía financiera del ministro no es un asunto privado sino una responsabilidad de toda la comunidad (Cap. 7). El modelo de «liderazgo compartido» exige que las decisiones sobre fondos comunitarios sean comunitarias. Esta opción también refleja el principio de «responsabilidad ante la congregación» que los autores identifican como uno de los pilares de la ética ministerial.",
+        cMinister: "El pastor puede experimentar vergüenza inicial al revelar la vulnerabilidad institucional, pero queda protegido moralmente. Su familia, si lo conoce, ve un modelo de integridad bajo presión. A largo plazo, su liderazgo se fortalece porque ha demostrado que la transparencia no es solo discurso. Soporta el costo relacional de corto plazo.",
+        cAffected: "El hermano Faustino y los demás auxiliares reciben una respuesta que les trata como adultos, no como dependientes silenciosos. Se abre la posibilidad de una solución estructural sostenible. La tensión es real pero manejable con el respaldo formal del consejo.",
+        cChurch: "La congregación recibe una lección viva de gobernanza íntegra. Si los miembros responden con generosidad ante la crisis revelada, se fortalece el sentido de pertenencia comunitaria. La campaña puede continuar con legitimidad intacta. El testimonio público dice: «esta iglesia practica lo que predica»."
+      },
+      /* Opción C */
+      {
+        tensionA: "Honestidad con los colaboradores afectados",
+        tensionB: "Protección institucional y evitar exposición pública de la crisis",
+        systemType: "mixed",
+        systemLabel: "Mixto (deontológico + relacional)",
+        systemExpl: "La opción combina el principio de honestidad directa con los afectados (deber) con un enfoque pragmático que intenta resolver el problema sin comprometer los fondos designados. Trull y Carter valoran la transparencia relacional, especialmente con quienes están dentro del equipo pastoral. Sin embargo, al omitir la notificación formal al consejo, el pastor retiene poder informativo de forma unilateral, lo que puede interpretarse como una forma sutil de control. La «convocatoria privada» a donantes, sin estructura formal, puede generar nuevas asimetrías de poder e informalidad financiera.",
+        cMinister: "El pastor demuestra valentía relacional al hablar con honestidad a los afectados. No carga con una mentira activa. Sin embargo, al manejar fondos extrapresupuestarios de forma informal, abre una zona gris que puede generarle cuestionamientos futuros si alguno de los donantes privados eleva sus expectativas de influencia dentro de la iglesia.",
+        cAffected: "Los auxiliares pastorales son tratados con respeto y conocen la verdad. Esto preserva la confianza relacional aunque no resuelve inmediatamente su situación económica. Dependen, en última instancia, de la respuesta de donantes seleccionados de forma discrecional por el pastor.",
+        cChurch: "La congregación en general no es informada, lo que preserva la estabilidad emocional a corto plazo. Pero si la solución informal falla o se filtra, aparece la pregunta inevitable: ¿por qué no se involucró al consejo? El testimonio es ambiguo: hay honestidad parcial, pero no gobernanza participativa."
+      },
+      /* Opción D */
+      {
+        tensionA: "Lealtad personal hacia el equipo ministerial",
+        tensionB: "Rendición de cuentas institucional y salud propia del ministro",
+        systemType: "teleological",
+        systemLabel: "Teleológico con riesgo de paternalismo",
+        systemExpl: "El pastor busca resolver la situación asumiendo personalmente el costo para proteger a todos: los fondos designados, el equipo pastoral y la imagen institucional. Trull y Carter llaman a este patrón «síndrome del ministro omnipotente» (Cap. 3), donde el líder siente que debe cargar solo con las crisis para no aparecer débil o para no perturbar el orden. Si bien la intención es noble, este modelo de liderazgo refuerza una estructura no participativa y niega a la congregación la oportunidad de ejercer su responsabilidad comunitaria.",
+        cMinister: "El pastor asume una carga financiera personal que puede generar resentimiento o estrés doméstico. Su familia —que no fue consultada— es afectada por una deuda contraída en secreto. La solución no aborda la causa estructural del problema, que volverá a presentarse. El silencio sostenido puede volverse agotador.",
+        cAffected: "Los auxiliares pastorales reciben su pago, pero sin saber que el pastor se endeudó por ellos. Se crea una deuda emocional implícita que puede distorsionar la dinámica de poder dentro del equipo. Faustino, en particular, puede sentirse obligado de maneras que no son saludables cuando conozca la verdad.",
+        cChurch: "La congregación permanece ajena a la crisis real y, por tanto, ajena a la solución. No hay crecimiento colectivo en el manejo de los recursos. Si el préstamo personal del pastor se hace visible (declaraciones, comentarios), puede interpretarse ambiguamente. El patrón de liderazgo solitario se consolida como cultura institucional."
+      }
+    ]
+  },
+
+  /* ══ CASO 2: SEXUALIDAD ══ */
+  {
+    options: [
+      "A. Continuar las sesiones estableciendo límites verbales, confiando en la madurez propia.",
+      "B. Interrumpir de inmediato la consejería sin dar explicaciones, bloqueando el contacto.",
+      "C. Revelar lo ocurrido a su esposa y supervisor, transferir el caso y aceptar rendición de cuentas.",
+      "D. Transferir el caso discretamente, sin revelar la situación a su esposa ni a supervisores."
+    ],
+    feedback: [
+      /* Opción A */
+      {
+        tensionA: "Continuidad del cuidado pastoral hacia una persona vulnerable",
+        tensionB: "Protección de los límites personales y matrimoniales del ministro",
+        systemType: "teleological",
+        systemLabel: "Teleológico con alto riesgo",
+        systemExpl: "El pastor apuesta a que el buen resultado (continuar apoyando a Verónica) puede lograrse confiando exclusivamente en su autocontrol. Trull y Carter son contundentes en este punto: «La confianza en la propia madurez espiritual, sin estructuras externas de rendición de cuentas, es la antesala de la caída moral en el ministerio» (Cap. 5, «El ministro y su congregación»). Los autores documentan que la mayoría de los casos de conducta sexual inapropiada en el ministerio no comenzaron con intenciones impuras, sino con una serie de pasos que parecían razonables individualmente. La dependencia emocional ya instalada hace que esta opción sea objetivamente de alto riesgo.",
+        cMinister: "El pastor Ríos continúa expuesto a una situación que ya ha admitido internamente que lo afecta. Cada sesión añade tensión no resuelta. Si eventualmente ocurre alguna transgresión —o si Verónica malinterpreta una señal—, las consecuencias serán mucho peores que si se actúa ahora. Su matrimonio con Gabriela queda en riesgo sin que ella tenga información para ayudar.",
+        cAffected: "Verónica sigue en una relación de dependencia que el pastor ya reconoció como problemática. Si la situación escala, ella —persona vulnerable en crisis matrimonial— será la más lastimada emocional y espiritualmente. El hecho de que el pastor «no haga nada diferente» puede ser leído por ella como una validación implícita de sus sentimientos.",
+        cChurch: "La congregación no sabe nada, pero el riesgo real es alto. Si en el futuro emerge algún escándalo, la gravedad se magnifica por el hecho de que el pastor sabía del riesgo y no actuó. La ausencia de estructuras de protección se convierte en evidencia de una cultura organizacional que no previene abusos."
+      },
+      /* Opción B */
+      {
+        tensionA: "Autoprotección ministerial del pastor",
+        tensionB: "Responsabilidad de cuidado hacia una feligresa vulnerable",
+        systemType: "deontological",
+        systemLabel: "Deontológico incompleto (protección sin acompañamiento)",
+        systemExpl: "La decisión de cortar el contacto de forma abrupta refleja un principio correcto —establecer límites— pero lo ejecuta de una manera que abandona el bienestar de la persona vulnerable. Trull y Carter enseñan que la responsabilidad pastoral hacia un feligrés en crisis no termina cuando el ministro descubre incomodidad; requiere un «cierre responsable» que incluya referencia y seguimiento (Cap. 5). La opción refleja más una ética de autoprotección que una ética de cuidado responsable.",
+        cMinister: "El pastor elimina el riesgo inmediato para sí mismo, pero carga con la culpa de haber abandonado a alguien vulnerable. A largo plazo, si Verónica sufre un daño emocional severo como consecuencia del abandono repentino, el pastor puede ser cuestionado. La ausencia de transparencia con su esposa y supervisores sigue siendo una bomba de tiempo.",
+        cAffected: "Verónica queda en una situación gravemente deteriorada. Acaba de hacer una confesión profunda y vulnerable, y recibe como respuesta el silencio o el rechazo. Esto puede profundizar su crisis, erosionar su confianza en el ministerio cristiano y, en casos extremos, desencadenar daños psicológicos serios. No tiene a nadie que la acompañe al proceso.",
+        cChurch: "Si Verónica comparte su experiencia con otros miembros —incluyendo que fue abandonada por el pastor sin explicación—, el testimonio del ministerio pastoral queda severamente dañado. La percepción pública puede ser la de un pastor que «huyó» en lugar de servir."
+      },
+      /* Opción C */
+      {
+        tensionA: "Transparencia y rendición de cuentas personal",
+        tensionB: "Protección de la propia reputación e intimidad matrimonial",
+        systemType: "deontological",
+        systemLabel: "Deontológico — Integridad estructural",
+        systemExpl: "Esta opción encarna los principios que Trull y Carter presentan como los pilares del manejo ético de la consejería pastoral: transparencia, límites claros y rendición de cuentas estructural. Los autores citan el «Manifiesto de Modesto» del equipo de Billy Graham como modelo: comprometerse con testigos, confesar antes de que el problema escale y nunca enfrentar solo las tentaciones del ministerio (Cap. 4). La opción es costosa emocionalmente —especialmente la conversación con Gabriela— pero es la única que crea un ambiente de sanidad real para todas las partes.",
+        cMinister: "El pastor soporta el costo de la vulnerabilidad honesta, pero queda protegido por estructuras externas. La conversación con Gabriela, aunque difícil, puede fortalecer el matrimonio si se aborda con gracia. El proceso de rendición de cuentas le provee un espacio de crecimiento personal. Su integridad ministerial queda intacta porque actuó antes de que hubiera una transgresión.",
+        cAffected: "Verónica recibe continuidad de cuidado a través de una profesional femenina calificada, lo que puede ser incluso más efectivo para su tipo de crisis. Saber que el pastor actuó con integridad —aunque no lo sepa con todos los detalles— preserva la posibilidad de que ella continúe en la fe. No es abandonada.",
+        cChurch: "Si en el futuro alguien llega a conocer la situación, la narrativa es de un pastor que actuó con integridad y humildad cuando fue tentado. Esto fortalece, en lugar de debilitar, el testimonio. Se establece un precedente de cultura preventiva dentro del liderazgo."
+      },
+      /* Opción D */
+      {
+        tensionA: "Privacidad y manejo autónomo del problema",
+        tensionB: "Transparencia con los vínculos primarios de rendición de cuentas",
+        systemType: "mixed",
+        systemLabel: "Teleológico con ilusión de control",
+        systemExpl: "El pastor transfiere el caso —lo que es correcto— pero mantiene el secreto frente a su esposa y supervisores —lo que es éticamente problemático. Trull y Carter señalan que el secreto ministerial en asuntos de atracción y límites pastorales no es discreción; es negación de la realidad. La frase «aún no pasó nada» es precisamente el tipo de razonamiento que los autores identifican como una de las primeras estaciones del camino hacia la caída moral (Cap. 5). El problema no se cierra al transferir el caso; se suspende temporalmente.",
+        cMinister: "El pastor se siente protegido a corto plazo, pero el problema emocional subyacente queda sin ser abordado. Sigue sin rendición de cuentas, sin apoyo para procesar su propia vulnerabilidad y sin la fortaleza que viene de la transparencia con su cónyuge. El secreto puede convertirse en una carga que deteriora su ministerio progresivamente.",
+        cAffected: "Verónica puede recibir ayuda adecuada si el colega al que se la transfiere es calificado. Sin embargo, si el pastor que la derivó la encontrará regularmente en el contexto eclesial, la transferencia sin claridad puede ser confusa o dolorosa.",
+        cChurch: "El problema no se resuelve sino se desplaza. La ausencia de transparencia interna deja a la institución sin la posibilidad de aprender o mejorar sus protocolos. Si en el futuro el pastor cae en una situación similar con otra persona, la falta de antecedentes registrados empeora el cuadro."
+      }
+    ]
+  },
+
+  /* ══ CASO 3: PODER ══ */
+  {
+    options: [
+      "A. Pedir a Sebastián que retire la moción en privado, encuadrándola como error de protocolo.",
+      "B. Aprobar la moción públicamente en la misma reunión y proponer una reforma de gobierno.",
+      "C. Crear una comisión interna de confianza, evitando el auditor externo.",
+      "D. Convocar a la asamblea para un voto de confianza, enmarcando la moción como desconfianza espiritual."
+    ],
+    feedback: [
+      /* Opción A */
+      {
+        tensionA: "Autoridad y estabilidad del liderazgo pastoral establecido",
+        tensionB: "Derecho legítimo de la congregación a la transparencia financiera",
+        systemType: "teleological",
+        systemLabel: "Teleológico — Preservación del orden establecido",
+        systemExpl: "La respuesta busca mantener la cohesión y el orden usando la influencia relacional sobre Sebastián. Trull y Carter identifican este patrón como «control por relacionamiento», una forma de poder pastoral que silencia la discrepancia sin abordar su fondo legítimo (Cap. 6, «El ministro y su congregación»). Los autores enseñan que el ejercicio saludable del poder ministerial es sirviente, no defensivo: «el liderazgo auténtico no teme la rendición de cuentas; la celebra como señal de madurez». Reencuadrar una propuesta legítima como «error de protocolo» es una forma de gaslighting institucional.",
+        cMinister: "El pastor evita el conflicto inmediato pero siembra desconfianza en Sebastián y en quienes observan el episodio. Si Sebastián acepta retirar la moción, queda con una sensación de haber sido neutralizado. Si no la retira, el pastor queda expuesto como alguien que intentó suprimir la transparencia. La situación financiera subyacente —si hay algo que ocultar— no se resuelve.",
+        cAffected: "Sebastián, quien actuó con valentía y respeto, recibe como respuesta una advertencia implícita de que la lealtad al pastor es más importante que la gobernanza sana. El resto del consejo aprende que los límites del poder pastoral son intocables. Los ancianos más jóvenes aprenderán a callar.",
+        cChurch: "La congregación no se entera de la tensión en el consejo, pero la cultura de opacidad se consolida. Si en el futuro emerge cualquier irregularidad financiera real, la imagen retrospectiva de este episodio será devastadora: «el pastor supo que alguien pedía cuentas y lo silencio»."
+      },
+      /* Opción B */
+      {
+        tensionA: "Humildad y apertura al escrutinio",
+        tensionB: "Dignidad personal y reputación de dos décadas de servicio",
+        systemType: "deontological",
+        systemLabel: "Deontológico — Ética del servicio y la transparencia",
+        systemExpl: "Esta opción refleja el principio de que la transparencia es una práctica de integridad, no una concesión ante la presión. Trull y Carter afirman que «el ministro que no puede rendir cuentas de su ejercicio del poder no está ejerciendo liderazgo cristiano sino autoridad autorreferenciada» (Cap. 6). Al aprobar la moción públicamente, el pastor Morel transforma un momento de tensión en un acto de liderazgo maduro. Esta opción también modela para la congregación que la autoridad y la transparencia no son opuestas, sino complementarias en el modelo del «líder siervo» que los autores desarrollan a lo largo del libro.",
+        cMinister: "El pastor puede experimentar un momento doloroso de ego, pero gana algo mucho más valioso: credibilidad intachable. Queda protegido ante cualquier acusación futura porque él mismo abrió los libros. Su familia y sus colaboradores ven un líder que antepone la integridad institucional a la comodidad personal. Su legado queda sellado positivamente.",
+        cAffected: "Sebastián es reivindicado y aprende que el liderazgo maduro es capaz de escuchar. El consejo completo ve que el disenso respetuoso es bienvenido, lo que crea una cultura de gobernanza participativa. La reforma propuesta puede transformar la institución para las próximas décadas.",
+        cChurch: "La congregación recibe el mensaje de que su iglesia practica la transparencia que predica. Ante la comunidad externa, la iglesia en Encarnación puede señalarse como una institución que se auto-audita. Este es el tipo de testimonio que abre puertas de credibilidad en espacios cívicos y sociales."
+      },
+      /* Opción C */
+      {
+        tensionA: "Apariencia de transparencia interna",
+        tensionB: "Independencia real del proceso de rendición de cuentas",
+        systemType: "mixed",
+        systemLabel: "Mixto — Deontológico aparente, teleológico real",
+        systemExpl: "El pastor acepta formalmente el principio de revisión pero controla quién revisa. Trull y Carter señalan que la rendición de cuentas solo es genuina cuando el proceso es independiente de quien es auditado. Una comisión seleccionada por el pastor revisando las finanzas del pastor es una contradicción estructural. Los autores citan el principio de «conflicto de intereses» como uno de los problemas éticos más comunes en el liderazgo eclesial latinoamericano, donde la confianza personal sustituye a los mecanismos institucionales (Cap. 7). Esta opción es una respuesta políticamente hábil pero éticamente insuficiente.",
+        cMinister: "El pastor mantiene el control del proceso y puede manejar los tiempos y el énfasis del informe. A corto plazo parece un éxito de negociación. Pero si Sebastián —u otros— reconocen la maniobra, la desconfianza aumenta. La «comisión de confianza» puede funcionar como un escudo que, paradójicamente, atrae más sospecha.",
+        cAffected: "Sebastián probablemente percibe que su propuesta fue cooptada. Si el informe de la comisión interna resulta benigno, nadie sabrá si fue porque todo estaba bien o porque la comisión fue condescendiente. Su posición dentro del consejo se vuelve incómoda: presentó la moción original y recibió un sucedáneo.",
+        cChurch: "La apariencia de transparencia puede satisfacer a la mayoría de los miembros. Sin embargo, la solución es frágil: depende del silencio de los ancianos comisionados. Si uno de ellos encuentra algo irregular, la situación puede escalar de forma más conflictiva que si se hubiera aceptado la auditoría externa desde el inicio."
+      },
+      /* Opción D */
+      {
+        tensionA: "Legitimidad popular del liderazgo pastoral",
+        tensionB: "Responsabilidad ética estructural ante mecanismos de gobierno",
+        systemType: "teleological",
+        systemLabel: "Teleológico — Uso del poder congregacional como escudo",
+        systemExpl: "El pastor usa la lealtad emocional de la congregación para neutralizar una petición legítima de rendición de cuentas, reencuadrándola como ataque espiritual. Trull y Carter dedican un apartado entero a este fenómeno, al que llaman «sacralización del poder pastoral»: el uso del lenguaje espiritual para blindar al líder de cuestionamientos estructurales (Cap. 6). Esta opción no solo evita la transparencia sino que penaliza a quien la pide, convirtiendo a Sebastián en el «malo de la historia». Cualquier victoria en este voto de confianza es efímera y envenenada.",
+        cMinister: "Aun si el pastor gana el voto, la maniobra queda registrada en la memoria colectiva de la congregación como un momento oscuro. Si en el futuro hay irregularidades —o simplemente más pedidos de transparencia—, este episodio resurge como evidencia de una cultura de poder no saludable. El pastor también carga con la responsabilidad de haber usado a la congregación como instrumento político.",
+        cAffected: "Sebastián queda expuesto a la desaprobación emocional de la mayoría congregacional, lo que puede ser devastador para un líder joven que actuó de buena fe. El costo personal que paga por hacer lo correcto envía un mensaje aterrador al resto del consejo y a las futuras generaciones de líderes: «no cuestiones al pastor».",
+        cChurch: "Si el episodio se hace conocido fuera de los muros de la iglesia —como suele ocurrir en comunidades pequeñas—, el testimonio institucional sufre un daño difícil de reparar. La iglesia aparece como una organización donde el liderazgo se protege a sí mismo usando la fidelidad devocional de sus miembros como arma."
+      }
+    ]
+  }
+];
+
+// ── STATE ────────────────────────────────────────────────────────────────────
+let currentCase = 0;
+
+function startLab() {
+  document.getElementById('introScreen').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'block';
+  showCase(0);
+}
+
+function showCase(idx) {
+  document.querySelectorAll('.case-screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById('case' + idx);
+  if (el) {
+    el.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  updateProgress(idx);
+}
+
+function updateProgress(idx) {
+  for (let i = 0; i < 3; i++) {
+    const dot = document.getElementById('dot' + i);
+    dot.className = 'step-dot';
+    if (i < idx) dot.classList.add('done');
+    else if (i === idx) dot.classList.add('active');
+  }
+  const label = document.getElementById('progressLabel');
+  label.innerHTML = idx < 3
+    ? `<strong>Caso ${idx + 1}</strong> de 3`
+    : '<strong>Completado</strong> ✓';
+}
+
+// ── FEEDBACK ─────────────────────────────────────────────────────────────────
+function openFeedback(caseIdx, optionIdx) {
+  const c = cases[caseIdx];
+  const fb = c.feedback[optionIdx];
+  const optText = c.options[optionIdx];
+
+  document.getElementById('modalChoiceText').textContent = optText;
+
+  const systemBadge = fb.systemType === 'deontological'
+    ? `<span class="system-badge deontological">⚖️ Sistema Deontológico</span>`
+    : fb.systemType === 'teleological'
+    ? `<span class="system-badge teleological">🎯 Sistema Teleológico</span>`
+    : `<span class="system-badge mixed">🔀 Sistema Mixto</span>`;
+
+  document.getElementById('modalBody').innerHTML = `
+
+    <div class="fb-section fb-tension">
+      <div class="fb-section-head">
+        <div class="icon">⚡</div>
+        1. Valores en Tensión
+      </div>
+      <div class="fb-section-body">
+        <div class="tension-pills">
+          <span class="pill pill-a">🔵 ${fb.tensionA}</span>
+          <span class="vs-dot">vs.</span>
+          <span class="pill pill-b">🔴 ${fb.tensionB}</span>
+        </div>
+        <p>Esta elección pone frente a frente dos principios ministeriales genuinamente válidos. La tensión entre ellos revela por qué los dilemas éticos reales no tienen respuestas «fáciles».</p>
+      </div>
+    </div>
+
+    <div class="fb-section fb-system">
+      <div class="fb-section-head">
+        <div class="icon">📐</div>
+        2. Marco Ético (Trull &amp; Carter)
+      </div>
+      <div class="fb-section-body">
+        ${systemBadge}
+        <p>${fb.systemExpl}</p>
+      </div>
+    </div>
+
+    <div class="fb-section fb-conseq">
+      <div class="fb-section-head">
+        <div class="icon">🌊</div>
+        3. Consecuencias en Tres Niveles
+      </div>
+      <div class="fb-section-body">
+        <div class="conseq-grid">
+          <div class="conseq-item">
+            <div class="conseq-icon ci-minister">🧑‍💼</div>
+            <div>
+              <div class="conseq-label">Para el ministro y su familia</div>
+              <div class="conseq-text">${fb.cMinister}</div>
+            </div>
+          </div>
+          <div class="conseq-item">
+            <div class="conseq-icon ci-affected">🤲</div>
+            <div>
+              <div class="conseq-label">Para las personas afectadas directamente</div>
+              <div class="conseq-text">${fb.cAffected}</div>
+            </div>
+          </div>
+          <div class="conseq-item">
+            <div class="conseq-icon ci-church">⛪</div>
+            <div>
+              <div class="conseq-label">Para el testimonio público de la iglesia</div>
+              <div class="conseq-text">${fb.cChurch}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reference-box">
+      <p><strong>📚 Referencia Bibliográfica:</strong> Trull, J. E. y Carter, J. E. <em>Ética Ministerial</em>. El análisis anterior se basa en los principios de integridad ministerial, rendición de cuentas y responsabilidad pastoral desarrollados a lo largo de la obra, especialmente en los capítulos sobre el ministro y sus relaciones, la toma de decisiones éticas y las áreas críticas de conflicto (Dinero, Sexo y Poder).</p>
+    </div>
+  `;
+
+  // Show/hide "next" button
+  const nextBtn = document.getElementById('nextBtn');
+  if (caseIdx < 2) {
+    nextBtn.textContent = `Siguiente caso (${caseIdx + 2} de 3) →`;
+    nextBtn.style.display = 'inline-block';
+  } else {
+    nextBtn.textContent = 'Finalizar Laboratorio ✓';
+    nextBtn.style.display = 'inline-block';
+  }
+
+  nextBtn.onclick = () => goNext(caseIdx);
+
+  document.getElementById('feedbackModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeFeedback() {
+  document.getElementById('feedbackModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function goNext(caseIdx) {
+  closeFeedback();
+  setTimeout(() => {
+    if (caseIdx < 2) {
+      currentCase = caseIdx + 1;
+      showCase(currentCase);
+    } else {
+      showCompletion();
+    }
+  }, 280);
+}
+
+function showCompletion() {
+  document.querySelectorAll('.case-screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('completionScreen').classList.add('active');
+  updateProgress(3);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function restartLab() {
+  currentCase = 0;
+  document.getElementById('completionScreen').classList.remove('active');
+  document.getElementById('introScreen').style.display = 'block';
+  document.getElementById('progressWrap').style.display = 'none';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Close modal on overlay click
+document.getElementById('feedbackModal').addEventListener('click', function(e) {
+  if (e.target === this) closeFeedback();
+});
+</script>
+</body>
+</html>
